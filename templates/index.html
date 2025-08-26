@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+
+{% block title %}AI採用支援システム - 履歴書分析{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- ヒーローセクション -->
+    <div class="col-12">
+        <div class="hero-section bg-gradient text-white rounded-4 p-5 mb-5">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="display-4 fw-bold mb-3">
+                        <i class="fas fa-brain me-3"></i>AI採用支援システム
+                    </h1>
+                    <p class="lead mb-4">
+                        履歴書・職務経歴書を瞬時に分析し、候補者評価と面接質問を自動生成。
+                        採用プロセスを<strong>99.6%効率化</strong>します。
+                    </p>
+                    <div class="d-flex flex-wrap gap-3 mb-4">
+                        <div class="feature-badge">
+                            <i class="fas fa-clock text-warning me-2"></i>8時間 → 2分
+                        </div>
+                        <div class="feature-badge">
+                            <i class="fas fa-chart-line text-success me-2"></i>99.6%削減
+                        </div>
+                        <div class="feature-badge">
+                            <i class="fas fa-yen-sign text-info me-2"></i>年間330万円削減
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 text-center">
+                    <i class="fas fa-file-alt display-1 opacity-75"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- メイン分析フォーム -->
+    <div class="col-lg-8">
+        <div class="card shadow-sm border-0 rounded-4">
+            <div class="card-header bg-primary text-white rounded-top-4">
+                <h3 class="mb-0">
+                    <i class="fas fa-upload me-2"></i>履歴書分析
+                </h3>
+            </div>
+            <div class="card-body p-4">
+                <form id="analysisForm" enctype="multipart/form-data">
+                    <!-- ファイルアップロード -->
+                    <div class="mb-4">
+                        <label for="resumeFile" class="form-label fw-semibold">
+                            <i class="fas fa-file-text me-2"></i>履歴書・職務経歴書（テキストファイル）
+                        </label>
+                        <input type="file" class="form-control form-control-lg" id="resumeFile" 
+                               name="resume_file" accept=".txt" required>
+                        <div class="form-text">
+                            <i class="fas fa-info-circle me-1"></i>対応形式: .txt（テキストファイル）
+                        </div>
+                    </div>
+
+                    <!-- 職種選択 -->
+                    <div class="mb-4">
+                        <label for="jobPosition" class="form-label fw-semibold">
+                            <i class="fas fa-briefcase me-2"></i>対象職種
+                        </label>
+                        <select class="form-select form-select-lg" id="jobPosition" name="job_position" required>
+                            <option value="">職種を選択してください</option>
+                            {% for job in job_positions %}
+                            <option value="{{ job }}">{{ job }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- 分析ボタン -->
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg" id="analyzeBtn">
+                            <i class="fas fa-search me-2"></i>分析開始
+                        </button>
+                    </div>
+                </form>
+
+                <!-- 分析中のローディング -->
+                <div id="loadingSection" class="text-center py-5" style="display: none;">
+                    <div class="spinner-border text-primary mb-3" role="status">
+                        <span class="visually-hidden">分析中...</span>
+                    </div>
+                    <h5 class="text-muted">AIが履歴書を分析しています...</h5>
+                    <p class="text-muted">数十秒お待ちください</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- サイドバー -->
+    <div class="col-lg-4">
+        <div class="card shadow-sm border-0 rounded-4 mb-4">
+            <div class="card-header bg-success text-white rounded-top-4">
+                <h5 class="mb-0">
+                    <i class="fas fa-rocket me-2"></i>主な機能
+                </h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <li class="mb-2">
+                        <i class="fas fa-check-circle text-success me-2"></i>
+                        履歴書の自動分析・構造化
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-check-circle text-success me-2"></i>
+                        企業理念との適合性評価
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-check-circle text-success me-2"></i>
+                        面接質問の自動生成
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-check-circle text-success me-2"></i>
+                        100点満点での総合評価
+                    </li>
+                    <li class="mb-0">
+                        <i class="fas fa-check-circle text-success me-2"></i>
+                        結果の詳細レポート生成
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card shadow-sm border-0 rounded-4">
+            <div class="card-header bg-info text-white rounded-top-4">
+                <h5 class="mb-0">
+                    <i class="fas fa-play-circle me-2"></i>デモ体験
+                </h5>
+            </div>
+            <div class="card-body">
+                <p class="card-text">
+                    サンプル履歴書でシステムの効果を即座に体験できます。
+                </p>
+                <a href="{{ url_for('demo') }}" class="btn btn-info text-white">
+                    <i class="fas fa-external-link-alt me-1"></i>デモを試す
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 分析結果表示エリア -->
+<div id="resultsSection" class="row mt-5" style="display: none;">
+    <div class="col-12">
+        <div class="card shadow-lg border-0 rounded-4">
+            <div class="card-header bg-gradient text-white rounded-top-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h3 class="mb-0">
+                        <i class="fas fa-chart-bar me-2"></i>分析結果
+                    </h3>
+                    <button class="btn btn-outline-light btn-sm" id="downloadBtn">
+                        <i class="fas fa-download me-1"></i>結果ダウンロード
+                    </button>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <!-- 候補者情報 -->
+                <div class="p-4 border-bottom">
+                    <h4 class="mb-3">
+                        <i class="fas fa-user me-2 text-primary"></i>候補者情報
+                    </h4>
+                    <div id="candidateInfo" class="row">
+                        <!-- JavaScript で動的に生成 -->
+                    </div>
+                </div>
+
+                <!-- 評価結果 -->
+                <div class="p-4 border-bottom">
+                    <h4 class="mb-3">
+                        <i class="fas fa-trophy me-2 text-warning"></i>総合評価
+                    </h4>
+                    <div id="evaluationResults">
+                        <!-- JavaScript で動的に生成 -->
+                    </div>
+                </div>
+
+                <!-- 面接質問 -->
+                <div class="p-4">
+                    <h4 class="mb-3">
+                        <i class="fas fa-question-circle me-2 text-info"></i>推奨面接質問
+                    </h4>
+                    <div id="interviewQuestions">
+                        <!-- JavaScript で動的に生成 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// メインのJavaScript処理は app.js で実装
+</script>
+{% endblock %}

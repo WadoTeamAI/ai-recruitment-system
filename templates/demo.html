@@ -1,0 +1,211 @@
+{% extends "base.html" %}
+
+{% block title %}デモ体験 - AI採用支援システム{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- デモ説明セクション -->
+    <div class="col-12">
+        <div class="demo-header bg-gradient text-white rounded-4 p-5 mb-5">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <h1 class="display-5 fw-bold mb-3">
+                        <i class="fas fa-play-circle me-3"></i>デモ体験
+                    </h1>
+                    <p class="lead mb-4">
+                        サンプル履歴書を使用して、AI採用支援システムの能力を実際に体験してください。
+                        様々なレベルの候補者での評価結果をご覧いただけます。
+                    </p>
+                    <div class="d-flex flex-wrap gap-3">
+                        <div class="demo-feature">
+                            <i class="fas fa-users text-info me-2"></i>4名の候補者
+                        </div>
+                        <div class="demo-feature">
+                            <i class="fas fa-briefcase text-warning me-2"></i>4つの職種
+                        </div>
+                        <div class="demo-feature">
+                            <i class="fas fa-bolt text-success me-2"></i>瞬時に分析
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 text-center">
+                    <i class="fas fa-flask display-1 opacity-75"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- デモ候補者一覧 -->
+    <div class="col-12">
+        <h2 class="mb-4">
+            <i class="fas fa-users me-2"></i>サンプル候補者を選択
+        </h2>
+        
+        <div class="row">
+            {% for candidate in demo_candidates %}
+            <div class="col-lg-6 mb-4">
+                <div class="card shadow-sm border-0 rounded-4 h-100 demo-candidate-card">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-start mb-3">
+                            <div class="candidate-avatar me-3">
+                                <i class="fas fa-user-circle fa-3x text-primary"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <h5 class="card-title mb-2">{{ candidate.name }}</h5>
+                                <p class="text-muted mb-2">
+                                    <i class="fas fa-briefcase me-1"></i>
+                                    推奨職種: <strong>{{ candidate.recommended_job }}</strong>
+                                </p>
+                                <p class="card-text text-muted">
+                                    {{ candidate.description }}
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button class="btn btn-primary demo-analyze-btn" 
+                                    data-filename="{{ candidate.filename }}"
+                                    data-name="{{ candidate.name }}">
+                                <i class="fas fa-search me-2"></i>この候補者を分析
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- 分析中のローディング -->
+<div id="demoLoadingSection" class="row mt-5" style="display: none;">
+    <div class="col-12">
+        <div class="card shadow-sm border-0 rounded-4">
+            <div class="card-body text-center py-5">
+                <div class="spinner-border text-primary mb-3" role="status">
+                    <span class="visually-hidden">分析中...</span>
+                </div>
+                <h5 class="text-muted">AIが履歴書を分析しています...</h5>
+                <p class="text-muted" id="loadingCandidate">候補者: <span id="loadingCandidateName"></span></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- デモ分析結果表示エリア -->
+<div id="demoResultsSection" class="row mt-5" style="display: none;">
+    <div class="col-12">
+        <div class="card shadow-lg border-0 rounded-4">
+            <div class="card-header bg-success text-white rounded-top-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h3 class="mb-0">
+                        <i class="fas fa-chart-bar me-2"></i>デモ分析結果
+                    </h3>
+                    <div>
+                        <span class="badge bg-light text-dark me-2">
+                            <i class="fas fa-flask me-1"></i>デモモード
+                        </span>
+                        <button class="btn btn-outline-light btn-sm" id="demoDownloadBtn">
+                            <i class="fas fa-download me-1"></i>結果ダウンロード
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <!-- 候補者情報 -->
+                <div class="p-4 border-bottom">
+                    <h4 class="mb-3">
+                        <i class="fas fa-user me-2 text-primary"></i>候補者情報
+                    </h4>
+                    <div id="demoCandidateInfo" class="row">
+                        <!-- JavaScript で動的に生成 -->
+                    </div>
+                </div>
+
+                <!-- 評価結果 -->
+                <div class="p-4 border-bottom">
+                    <h4 class="mb-3">
+                        <i class="fas fa-trophy me-2 text-warning"></i>総合評価
+                    </h4>
+                    <div id="demoEvaluationResults">
+                        <!-- JavaScript で動的に生成 -->
+                    </div>
+                </div>
+
+                <!-- 面接質問 -->
+                <div class="p-4 border-bottom">
+                    <h4 class="mb-3">
+                        <i class="fas fa-question-circle me-2 text-info"></i>推奨面接質問
+                    </h4>
+                    <div id="demoInterviewQuestions">
+                        <!-- JavaScript で動的に生成 -->
+                    </div>
+                </div>
+
+                <!-- 特記事項 -->
+                <div class="p-4">
+                    <h4 class="mb-3">
+                        <i class="fas fa-sticky-note me-2 text-secondary"></i>特記事項
+                    </h4>
+                    <div id="demoSpecialNotes">
+                        <!-- JavaScript で動的に生成 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- デモ説明セクション -->
+<div class="row mt-5">
+    <div class="col-12">
+        <div class="card shadow-sm border-0 rounded-4">
+            <div class="card-header bg-info text-white rounded-top-4">
+                <h4 class="mb-0">
+                    <i class="fas fa-lightbulb me-2"></i>デモのポイント
+                </h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="text-primary">
+                            <i class="fas fa-star me-2"></i>評価の精度
+                        </h6>
+                        <ul class="list-unstyled mb-3">
+                            <li><i class="fas fa-check text-success me-2"></i>シニアレベル: 高スコア判定</li>
+                            <li><i class="fas fa-check text-success me-2"></i>中堅レベル: バランス重視</li>
+                            <li><i class="fas fa-check text-success me-2"></i>ジュニアレベル: 成長可能性評価</li>
+                            <li><i class="fas fa-check text-success me-2"></i>営業職: 異なる評価軸で適切判定</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="text-primary">
+                            <i class="fas fa-cog me-2"></i>システムの特徴
+                        </h6>
+                        <ul class="list-unstyled mb-3">
+                            <li><i class="fas fa-check text-success me-2"></i>職種に応じた評価基準自動切り替え</li>
+                            <li><i class="fas fa-check text-success me-2"></i>候補者の弱点に基づく面接質問生成</li>
+                            <li><i class="fas fa-check text-success me-2"></i>客観的で一貫性のある判定</li>
+                            <li><i class="fas fa-check text-success me-2"></i>実際の採用プロセスで即座に活用可能</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="alert alert-primary mt-3">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <strong>実際の使用では</strong>、お客様独自の企業理念・求人要件に基づいて評価が行われ、
+                    より精密なマッチング判定が可能です。
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// デモページのJavaScript処理は app.js で実装
+</script>
+{% endblock %}

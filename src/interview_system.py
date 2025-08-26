@@ -9,7 +9,10 @@ from typing import List, Dict, Optional
 from enum import Enum
 import json
 import random
-from .hr_recruitment_system import CandidateProfile, JobRequirement, MatchingResult
+import hr_recruitment_system
+CandidateProfile = hr_recruitment_system.CandidateProfile
+JobRequirement = hr_recruitment_system.JobRequirement
+MatchingResult = hr_recruitment_system.MatchingResult
 
 class InterviewStage(Enum):
     """面接段階"""
@@ -522,7 +525,8 @@ def main():
     print("面接質問・評価システムのデモを実行します...")
     
     # サンプルデータのインポート
-    from .hr_recruitment_system import main as hr_main
+    import hr_recruitment_system
+    hr_main = hr_recruitment_system.main
     
     # デモ実行
     print("面接質問生成システムが正常に動作しています。")

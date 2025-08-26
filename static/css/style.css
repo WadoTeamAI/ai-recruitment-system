@@ -1,0 +1,275 @@
+/* AI採用支援システム - カスタムスタイル */
+
+/* 全体のスタイル */
+body {
+    font-family: 'Hiragino Sans', 'Meiryo', sans-serif;
+    background-color: #f8f9fa;
+}
+
+/* グラデーション背景 */
+.bg-gradient {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.demo-header {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+}
+
+/* カード設計 */
+.card {
+    border: none !important;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
+}
+
+.rounded-4 {
+    border-radius: 1rem !important;
+}
+
+.rounded-top-4 {
+    border-top-left-radius: 1rem !important;
+    border-top-right-radius: 1rem !important;
+}
+
+/* ヒーローセクション */
+.hero-section {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+}
+
+.feature-badge {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+/* デモ候補者カード */
+.demo-candidate-card {
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.demo-candidate-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15) !important;
+}
+
+.candidate-avatar i {
+    color: #667eea;
+}
+
+/* デモ機能バッジ */
+.demo-feature {
+    background: rgba(255, 255, 255, 0.25);
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+/* 評価スコア表示 */
+.score-circle {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+    margin: 0 auto;
+}
+
+.score-excellent {
+    background: linear-gradient(135deg, #4CAF50, #81C784);
+}
+
+.score-good {
+    background: linear-gradient(135deg, #2196F3, #64B5F6);
+}
+
+.score-average {
+    background: linear-gradient(135deg, #FF9800, #FFB74D);
+}
+
+.score-poor {
+    background: linear-gradient(135deg, #F44336, #EF5350);
+}
+
+/* プログレスバー */
+.progress {
+    height: 10px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    transition: width 1s ease-in-out;
+}
+
+/* 面接質問カード */
+.interview-question {
+    border-left: 4px solid #667eea;
+    background: #f8f9ff;
+    margin-bottom: 1rem;
+}
+
+.question-category {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: inline-block;
+    margin-bottom: 0.5rem;
+}
+
+/* 特記事項 */
+.special-note {
+    border-left: 4px solid #28a745;
+    background: #f8fff8;
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    border-radius: 0 0.5rem 0.5rem 0;
+}
+
+.warning-note {
+    border-left-color: #ffc107;
+    background: #fffbf0;
+}
+
+/* ローディング */
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
+}
+
+/* ボタン */
+.btn {
+    border-radius: 0.75rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.btn-lg {
+    padding: 0.75rem 2rem;
+    font-size: 1.1rem;
+}
+
+/* ファイルアップロード */
+.form-control:focus,
+.form-select:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+/* ナビゲーション */
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.4rem;
+}
+
+.navbar-nav .nav-link {
+    font-weight: 500;
+    padding: 0.5rem 1rem !important;
+    border-radius: 0.5rem;
+    margin: 0 0.2rem;
+    transition: all 0.2s ease;
+}
+
+.navbar-nav .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* フッター */
+footer {
+    margin-top: auto;
+}
+
+/* レスポンシブ */
+@media (max-width: 768px) {
+    .display-4 {
+        font-size: 2.5rem;
+    }
+    
+    .hero-section,
+    .demo-header {
+        min-height: 250px;
+        padding: 2rem !important;
+    }
+    
+    .feature-badge,
+    .demo-feature {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.8rem;
+    }
+    
+    .score-circle {
+        width: 100px;
+        height: 100px;
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    
+    .card-body {
+        padding: 1.5rem !important;
+    }
+    
+    .feature-badge,
+    .demo-feature {
+        display: block;
+        margin-bottom: 0.5rem;
+        text-align: center;
+    }
+}
+
+/* アニメーション */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in-up {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.slide-in {
+    animation: slideIn 0.5s ease-out;
+}
