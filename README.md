@@ -38,29 +38,52 @@
 | 候補者評価レポート作成 | 5時間 | 5分 | **🔥98.3%** |
 | 採用会議準備 | 3時間 | 30分 | **🔥83.3%** |
 
+## 🌐 **Webアプリケーション** (NEW!)
+
+### 🚀 **オンラインで即座に体験**
+**ライブデモ**: [https://ai-recruitment-system.railway.app](https://ai-recruitment-system.railway.app)
+
+- ✅ **ブラウザから履歴書アップロード**
+- ✅ **リアルタイム分析・評価**  
+- ✅ **美しいUI + レスポンシブデザイン**
+- ✅ **4名のデモ候補者で即座に体験**
+
+### 📱 **主要機能**
+1. **ファイルアップロード**: 履歴書ファイル(.txt)を選択
+2. **職種選択**: 4種類の職種から選択  
+3. **瞬時分析**: AIが2分で総合評価
+4. **詳細結果**: 面接質問・評価レポートを表示
+5. **結果保存**: JSON形式でダウンロード
+
 ## 🎮 クイックスタート（5分で体験）
 
-### 1. インストール
+### **方法1: Webアプリで体験（推奨）**
+1. **[ライブデモサイト](https://ai-recruitment-system.railway.app)** にアクセス
+2. **「デモを試す」** をクリック
+3. サンプル候補者を選択して **「この候補者を分析」**
+4. **瞬時に評価結果が表示されます！**
+
+### **方法2: ローカルインストール**
 ```bash
-git clone https://github.com/yourusername/ai-recruitment-system.git
+# 1. リポジトリクローン
+git clone https://github.com/WadoTeamAI/ai-recruitment-system.git
 cd ai-recruitment-system
-```
 
-### 2. デモ実行
-```bash
-# 完全デモ（全機能を一度に体験）
+# 2. Webアプリ起動
+pip install Flask gunicorn
+python app.py
+# → http://localhost:5000 でアクセス
+
+# 3. または CLI デモ実行  
 python run_demo.py
-
-# 個別機能テスト
-cd src/
-python hr_cli_standalone.py --analyze ../examples/sample_resume.txt --job "シニアWebエンジニア"
 ```
 
 ### 3. 実行結果例
 ```
-🏆 総合スコア: 82.8点
+🏆 総合スコア: 84.8点
 📊 判定: ✅ 推薦 - 即座に次のステップへ
 🎯 面接重点分野: 技術スキル・専門知識、コミュニケーション能力
+💼 推奨年収: 800-1200万円
 ```
 
 ## 📋 セットアップ・使い方
