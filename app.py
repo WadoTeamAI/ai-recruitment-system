@@ -18,14 +18,62 @@ from io import BytesIO
 # srcディレクトリを追加
 sys.path.insert(0, str(Path(__file__).parent / 'src'))
 
-from src.hr_recruitment_system import (
-    ResumeAnalyzer, CandidateMatcher, CompanyProfile, JobRequirement
-)
-from src.interview_system import InterviewQuestionGenerator, InterviewStage
+try:
+    from src.hr_recruitment_system import (
+        ResumeAnalyzer, CandidateMatcher, CompanyProfile, JobRequirement
+    )
+    from src.interview_system import InterviewQuestionGenerator, InterviewStage
+except ImportError:
+    # Vercel環境での代替インポート
+    import importlib.util
+    import os
+    
+    # hr_recruitment_system
+    spec1 = importlib.util.spec_from_file_location(
+        "hr_recruitment_system", 
+        os.path.join(os.path.dirname(__file__), "src", "hr_recruitment_system.py")
+    )
+    hr_module = importlib.util.module_from_spec(spec1)
+    spec1.loader.exec_module(hr_module)
+    
+    # interview_system
+    spec2 = importlib.util.spec_from_file_location(
+        "interview_system", 
+        os.path.join(os.path.dirname(__file__), "src", "interview_system.py")
+    )
+    iv_module = importlib.util.module_from_spec(spec2)
+    spec2.loader.exec_module(iv_module)
+    
+    # クラスをインポート
+    ResumeAnalyzer = hr_module.ResumeAnalyzer
+    CandidateMatcher = hr_module.CandidateMatcher
+    CompanyProfile = hr_module.CompanyProfile
+    JobRequirement = hr_module.JobRequirement
+    InterviewQuestionGenerator = iv_module.InterviewQuestionGenerator
+    InterviewStage = iv_module.InterviewStage
 
 app = Flask(__name__)
 app.secret_key = 'hr_system_secret_key_2024'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
+
+# デバッグ用エラーハンドリング
+@app.errorhandler(500)
+def internal_error(error):
+    import traceback
+    return jsonify({
+        'error': 'Internal Server Error',
+        'message': str(error),
+        'traceback': traceback.format_exc()
+    }), 500
+
+@app.errorhandler(Exception)
+def handle_exception(e):
+    import traceback
+    return jsonify({
+        'error': 'Unhandled Exception',
+        'message': str(e),
+        'traceback': traceback.format_exc()
+    }), 500
 
 # アップロード設定
 UPLOAD_FOLDER = Path('uploads')
