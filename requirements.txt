@@ -10,7 +10,7 @@ click==8.1.7
 blinker==1.6.3
 itsdangerous==2.1.2
 
-# WSGI サーバー (本番環境用)
+# WSGI サーバー (Heroku/Railway用)
 gunicorn==21.2.0
 
 # 開発用（オプション）

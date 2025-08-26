@@ -362,6 +362,12 @@ def health():
         'version': '1.0.0'
     })
 
+# Vercel用のアプリケーションエクスポート
+# この行は Vercel がアプリケーションを認識するために必要
+app = app
+
 if __name__ == '__main__':
-    # 開発環境での起動
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    # 開発環境での起動（ポート8000を使用）
+    import os
+    port = int(os.environ.get('PORT', 8000))
+    app.run(debug=True, host='0.0.0.0', port=port)
